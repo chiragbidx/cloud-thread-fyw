@@ -6,17 +6,6 @@ import { getAuthSession } from "@/lib/auth/session";
 import { db } from "@/lib/db/client";
 import { users } from "@/lib/db/schema";
 
-// Purpose: Server route entry for /dashboard.
-// Keep auth checks and database reads in this file,
-// then pass prepared props into `client.tsx`.
-
-function getGreeting(): string {
-  const hour = new Date().getHours();
-  if (hour < 12) return "Good morning";
-  if (hour < 18) return "Good afternoon";
-  return "Good evening";
-}
-
 export default async function DashboardPage() {
   const session = await getAuthSession();
   if (!session) redirect("/auth#signin");
@@ -30,9 +19,22 @@ export default async function DashboardPage() {
   const firstName = user?.firstName || "there";
 
   return (
-    <Client
-      greeting={getGreeting()}
-      firstName={firstName}
-    />
+    <section>
+      <div className="mb-10">
+        <h1 className="text-3xl font-bold">Welcome to SendPilot</h1>
+        <p className="mt-2 text-muted-foreground text-lg">
+          Plan, launch, and track email campaigns with ease.
+        </p>
+        <div className="mt-6">
+          <a
+            href="/dashboard/campaigns/new"
+            className="inline-block bg-primary text-background rounded-md px-5 py-2 font-medium shadow hover:bg-primary/90 transition text-base"
+          >
+            Create Your First Campaign
+          </a>
+        </div>
+      </div>
+      <Client greeting="" firstName={firstName} />
+    </section>
   );
 }
